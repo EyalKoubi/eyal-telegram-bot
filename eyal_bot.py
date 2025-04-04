@@ -1,7 +1,7 @@
 from telegram.ext import Updater, MessageHandler, Filters, CommandHandler
 import os
-TOKEN = os.getenv("TOKEN")
 
+TOKEN = os.getenv("TOKEN")
 sessions = {}
 
 def start(update, context):
@@ -28,6 +28,7 @@ def handle_message(update, context):
             update.message.reply_text("תודה רבה, אבל כנראה שזה פחות רלוונטי. בהצלחה! 🙏")
         else:
             update.message.reply_text("אנא בחר 1, 2 או 3 🙏")
+
     elif step == 2:
         if text == "1" or text == "2":
             sessions[user_id]["step"] = 3
@@ -37,19 +38,40 @@ def handle_message(update, context):
             update.message.reply_text("תודה רבה, אבל נראה שזה פחות יתאים לי. כל טוב! 👋")
         else:
             update.message.reply_text("אנא בחר 1, 2 או 3 🙏")
+
     elif step == 3:
         if text == "4":
+            sessions[user_id]["step"] = 4
+            update.message.reply_text("היכן העבודה?\n1. צפון\n2. מרכז\n3. דרום\n4. חו\"ל")
+        elif text in ["1", "2", "3"]:
+            del sessions[user_id]
+            update.message.reply_text("אז כנראה שלא נסתדר 🙂 שיהיה בהצלחה!")
+        else:
+            update.message.reply_text("אנא בחר 1, 2, 3 או 4 🙏")
+
+    elif step == 4:
+        if text == "1" or text == "2":
+            sessions[user_id]["step"] = 5
+            update.message.reply_text("מה סוג המשרה?\n1. מלאה\n2. חלקית")
+        elif text in ["3", "4"]:
+            del sessions[user_id]
+            update.message.reply_text("תודה רבה, אבל אני מעדיף עבודה בצפון או במרכז. בהצלחה! 🌍")
+        else:
+            update.message.reply_text("אנא בחר 1, 2, 3 או 4 🙏")
+
+    elif step == 5:
+        if text == "1":
             del sessions[user_id]
             update.message.reply_text("""נשמע שיש התאמה! 🙌
 הנה הפרטים שלי:
 שם: אייל קובי
 📧 eyal4845@gmail.com
 📱 0509596599""")
-        elif text in ["1", "2", "3"]:
+        elif text == "2":
             del sessions[user_id]
-            update.message.reply_text("אז כנראה שלא נסתדר 🙂 שיהיה בהצלחה!")
+            update.message.reply_text("אני מעדיף משרה מלאה 🙂 תודה ובהצלחה!")
         else:
-            update.message.reply_text("אנא בחר 1, 2, 3 או 4 🙏")
+            update.message.reply_text("אנא בחר 1 או 2 🙏")
 
 def main():
     updater = Updater(TOKEN, use_context=True)
