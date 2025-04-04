@@ -5,5 +5,5 @@ services:
     buildCommand: ""
     startCommand: bash start.sh
     envVars:
-        key: TOKEN
+      - key: TOKEN
         value: "8021635930:AAHIJCh1_eXsTx2QueVwlLk0puF8JrXH5mI"
